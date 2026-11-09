@@ -39,23 +39,25 @@ The lists come in:
 1. In NFC Tools, tap **Write**, then **More options**, then **Import from CSV**, and pick the **test 1–3** list.
    - ⚠ Switch **off** "First row is a header". It starts switched on, and the lists have no header row, so with it on your first card gets skipped. You'll see the count go up by one (46 rows becomes 47 on a 4–50 list).
    - Tick, and the Write screen shows row 1 ("1 / 3" on the test list).
-   - Tap **Write** to start each card.
-2. Hold a blank card flat against the **top of the back** of the iPhone, near the camera. Hold still for a second or two until it says it's written. The app moves on to the next row.
-3. Write all 3.
-4. Close NFC Tools, then tap card 1 on your phone again. You should see the pink "New bestie added!" window. That means it worked.
-5. **Don't save** on a test card. (If you do, reset it on the admin page.)
+2. Tap **Write**, then hold a blank card flat against the **top of the back** of the iPhone, near the camera. Hold still for a second or two until it ticks.
+3. The little dot next to the row number goes from **black to green**: that row is on a card. Tap **›** (next) to move to the next row, then **Write** again for the next card.
+4. Write all 3.
+5. Close NFC Tools, then tap card 1 on your phone again. You should see the pink "New bestie added!" window. That means it worked.
+6. **Don't save** on a test card. (If you do, reset it on the admin page.)
 
 Nothing happens when you tap? Check the card in NFC Tools' **Read** tab. Empty = the write didn't finish: write it again and hold still longer. Take the phone case off if it's thick or has a wallet on the back.
 
 ## 5. Write the rest, in batches
 
-Pick the **4–50** list, write those, then **51–100**, and so on. Keep each batch in its own pile or box with the numbers on a sticky note.
+Pick the **4–50** list and write those the same way (Write, card on, green dot, ›), then **51–100**, and so on. Keep each batch in its own pile or box with the numbers on a sticky note.
 
 **Never tick "lock" or "make read-only".** A locked card can never be changed again.
 
 ## When the app loses your place
 
 It happens: the app closes, the phone locks, or the import is gone when you come back.
+
+If the list is still loaded in NFC Tools, flick through the rows with ‹ ›: green dots are written, black ones aren't. If it's gone:
 
 1. Tap the **last card you wrote** on your phone (or read it in NFC Tools). The number is in the address: `/c/43-…` = card 43.
 2. Make a new list that starts **after** it: on the admin page use **Or any range** (from 44 to 100), or ask Claude: **"make a card list from 44 to 100"**.

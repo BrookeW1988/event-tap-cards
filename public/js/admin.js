@@ -85,7 +85,7 @@ async function render() {
         <ol>
           <li>On an iPhone, install <strong>NFC Tools</strong> (by wakdev) and buy the <strong>Pro</strong> upgrade in the app ($5.99, once). The CSV import needs Pro.</li>
           <li>Open this admin page <strong>on that iPhone</strong> and tap a list below. Save it to Files.</li>
-          <li>In NFC Tools: <strong>Write</strong> → <strong>More options</strong> → <strong>Import from CSV</strong>, and pick the list. Switch <strong>off</strong> "First row is a header" (the lists have no header, so with it on your first card is skipped). Tick, tap <strong>Write</strong>, then hold each blank card flat to the top of the back of the iPhone: it writes the next address onto each card. Don't lock the cards.</li>
+          <li>In NFC Tools: <strong>Write</strong> → <strong>More options</strong> → <strong>Import from CSV</strong>, and pick the list. Switch <strong>off</strong> "First row is a header" (the lists have no header, so with it on your first card is skipped). Tick. Then for each card: tap <strong>Write</strong>, hold the card flat to the top of the back of the iPhone till it ticks, the dot by the row number goes green, then tap <strong>›</strong> for the next row. Don't lock the cards.</li>
           <li>Do the <strong>test list (cards 1–3)</strong> first. Tap each one on your phone: you should see the blank set-up window. Don't save on a test card (or reset it below after).</li>
           <li>Then batches of 50, so you always know where you're up to. Lost your place? Tap the last card you wrote to see its number, then start a new list from the next one. Skipping numbers is fine. <strong>Never write the same number twice</strong>: two people would share one card.</li>
         </ol>
