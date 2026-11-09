@@ -1,0 +1,37 @@
+# Netlify settings. You shouldn't need to change anything here.
+
+[build]
+  # The cards site is plain HTML + JavaScript, so there's nothing to build:
+  # Netlify publishes the public/ folder exactly as it is.
+  publish = "public"
+  command = ""
+
+[functions]
+  # The small server bits (loading a card, saving it, the admin page).
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[dev]
+  # `npm run dev` = run the site on your own computer at http://localhost:8888
+  publish = "public"
+  port = 8888
+  autoLaunch = false
+
+# The address written on each card: /c/<number>-<code>. One page handles them all.
+[[redirects]]
+  from = "/c/*"
+  to = "/c.html"
+  status = 200
+
+# Keep every page out of Google: card pages are for the people who tap them.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Referrer-Policy = "no-referrer"
+
+# Settings: always fetch the latest, so your changes show up straight away.
+[[headers]]
+  for = "/cards.config.json"
+  [headers.values]
+    Cache-Control = "no-cache"

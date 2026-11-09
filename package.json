@@ -1,0 +1,21 @@
+{
+  "name": "event-tap-cards",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tap-to-share NFC cards for your event: guests tap a card on their phone, add their name and socials, then tap it on other people's phones to swap.",
+  "license": "MIT",
+  "scripts": {
+    "setup": "npm install && bash tools/new-keys.sh",
+    "dev": "npx -y netlify-cli@27.14.2 dev --offline",
+    "check": "node tools/check.mjs",
+    "cards": "node tools/card-list.mjs",
+    "deploy:live": "npx -y netlify-cli@27.14.2 deploy --prod"
+  },
+  "dependencies": {
+    "@netlify/blobs": "11.1.6"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

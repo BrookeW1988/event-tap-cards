@@ -1,0 +1,37 @@
+/* The admin page: plain and readable on a laptop or a phone. */
+:root {
+  --hot: #ff1493;
+  --ink: #1a0a14;
+  --bg: #fbf6f9;
+  --line: #ead9e3;
+  --muted: #6b5763;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.page { max-width: 1100px; margin: 0 auto; padding: 28px 16px 60px; }
+h1 { font-size: 30px; margin: 0; }
+h2 { font-size: 19px; margin: 0 0 10px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+code { font-size: 13px; background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; word-break: break-all; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; margin: 22px 0; }
+.box { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+.box ol { margin: 8px 0 0; padding-left: 20px; }
+.box li { margin: 6px 0; }
+.warn { background: #fff8d6; border: 1px solid #e0c35a; border-radius: 10px; padding: 10px 12px; margin: 12px 0; color: #4a3b00; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.btn { appearance: none; border: 2px solid var(--hot); background: var(--hot); color: #fff; border-radius: 999px; padding: 8px 14px; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-block; }
+.btn.ghost { background: #fff; color: var(--hot); }
+.btn.quiet { border-color: var(--line); background: #fff; color: var(--ink); font-weight: 600; padding: 5px 10px; font-size: 13px; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+input[type="number"] { width: 90px; font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; }
+.qr { width: 220px; height: 220px; margin: 10px auto 0; background: #fff; padding: 10px; border-radius: 12px; border: 1px solid var(--line); }
+.qr svg { width: 100%; height: 100%; display: block; }
+.center { text-align: center; }
+.table-wrap { overflow-x: auto; background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+th { border-top: 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+tr.hidden td { opacity: 0.5; }
+.tag { font-size: 11px; font-weight: 700; color: var(--hot); margin-left: 6px; }
+.actions { white-space: nowrap; }

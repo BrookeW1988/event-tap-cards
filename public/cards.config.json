@@ -1,0 +1,63 @@
+{
+  "_help": "Everything about your cards site lives in this one file. Change a value, save, then refresh the page. In any line, {event}, {year}, {place} and {date} fill in from the event section. Colours are hex codes (#rrggbb). Fonts are any font name from fonts.google.com. Easiest way: tell Claude what you want changed.",
+
+  "event": {
+    "name": "Your Event",
+    "year": "2027",
+    "place": "Your City",
+    "date": "01.03"
+  },
+
+  "pass": {
+    "title": "ALL ACCESS",
+    "subtitle": "{event} {year} · {place}",
+    "role": "{event} bestie",
+    "seal": ["✦ {date} ✦", "BESTIE", "VERIFIED"],
+    "strap": "{event}",
+    "tapLine": "TAP TO SWAP ✦",
+    "backTitle": "SCAN TO SWAP",
+    "under": "got a card? tap it on their phone to swap back"
+  },
+
+  "messenger": {
+    "title": "{event} Messenger",
+    "banner": "{event} ✦ TAP · SWAP · SLAY"
+  },
+
+  "fields": ["instagram", "tiktok", "linkedin", "website"],
+
+  "look": {
+    "colours": {
+      "hot": "#ff1493",
+      "soft": "#ff69b4",
+      "lilac": "#b19cd9",
+      "mint": "#97d3b4",
+      "ink": "#1a0a14",
+      "night": "#0b0208"
+    },
+    "fonts": {
+      "display": "Bagel Fat One",
+      "pixel": "Pixelify Sans",
+      "numbers": "VT323",
+      "body": "Space Grotesk"
+    }
+  },
+
+  "words": {
+    "blankIntro": "♪ this card is blank. is it yours? add your details, then tap it on new besties' phones to swap.",
+    "blankGroup": "New bestie added! (1)",
+    "blankNudge": "hit save and your backstage pass appears ✦",
+    "saveButton": "Save my card",
+    "privacy": "anyone who taps your card sees your name and links (never your email), so only add what you'd happily hand a stranger. change or clear it any time.",
+    "startIntro": "♪ step 1: add your details. step 2: tap your card on your phone. that's it.",
+    "startGroup": "Sign in to {event}",
+    "startButton": "Next: tap my card",
+    "signedIn": "has just signed in.",
+    "notACard": "this link doesn't match any of our cards. double-check you tapped the right one?"
+  },
+
+  "email": {
+    "subject": "edit your {event} card (no. {passNo}) ✦",
+    "replyTo": ""
+  }
+}

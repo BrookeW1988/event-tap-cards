@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Set up your card</title>
+  <link rel="icon" href="/brand/icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/css/cards.css">
+  <style>
+    /* /screen: put this on the TV or projector during your card set-up moment.
+       The QR opens /cards on people's phones. Press F for full screen. */
+    body { overflow: hidden; }
+    .screen {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      align-items: center;
+      gap: 5vw;
+      padding: 6vh 7vw;
+      color: #fff;
+      background-color: var(--hot-deep);
+      background-image:
+        radial-gradient(rgba(255, 255, 255, 0.16) 2px, transparent 2.2px),
+        linear-gradient(180deg, var(--hot-bright) 0%, var(--hot-deep) 50%, var(--hot-darker) 100%);
+      background-size: 26px 26px, 100% 100%;
+    }
+    .screen h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 7vw, 120px); line-height: 0.95; text-shadow: 0 6px 0 var(--hot-dark); }
+    .screen ol { margin-top: 5vh; display: grid; gap: 2.4vh; list-style: none; }
+    .screen li { font-family: var(--font-body); font-weight: 700; font-size: clamp(18px, 2.3vw, 40px); line-height: 1.2; display: flex; gap: 0.6em; align-items: baseline; }
+    .screen li b { font-family: var(--font-pixel); color: var(--ink); background: #fff; border-radius: 999px; min-width: 1.6em; text-align: center; flex: none; }
+    .qr-card { background: #fff; border-radius: 4vh; padding: 4vh; box-shadow: 0 0 0 1.2vh rgba(255, 255, 255, 0.45), 0 4vh 8vh rgba(40, 0, 25, 0.45); text-align: center; color: var(--ink); }
+    .qr-card svg { display: block; width: 100%; height: auto; }
+    .qr-card p { margin-top: 2vh; font-family: var(--font-pixel); font-size: clamp(14px, 1.6vw, 28px); letter-spacing: 0.08em; }
+    @media (max-aspect-ratio: 1/1) { .screen { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="screen">
+    <div>
+      <h1 id="title">Your card is ready to swap</h1>
+      <ol>
+        <li><b>1</b><span>Scan the code with your phone camera</span></li>
+        <li><b>2</b><span>Pop in your name and socials</span></li>
+        <li><b>3</b><span>Tap your card on the top of your phone</span></li>
+        <li><b>4</b><span>Now tap it on someone else's phone to swap</span></li>
+      </ol>
+    </div>
+    <div class="qr-card">
+      <div id="qr"></div>
+      <p id="address"></p>
+    </div>
+  </main>
+  <script type="module">
+    import { applyLook, filler, loadConfig } from "/js/look.js";
+    import { qrSvg } from "/js/ui.js";
+    const start = `${location.origin}/cards`;
+    document.getElementById("qr").innerHTML = qrSvg(start);
+    document.getElementById("address").textContent = start.replace(/^https?:\/\//, "");
+    loadConfig().then((config) => {
+      applyLook(config);
+      const title = config.words?.screenTitle;
+      if (title) document.getElementById("title").textContent = filler(config)(title);
+    }).catch(() => null);
+    // F = full screen, for the projector.
+    addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,602 @@
+/* Tap cards: two looks.
+ *   .msn-*  = SETUP screens (blank card, edit, /cards): an early-2000s
+ *             messenger window. "new bestie added!"
+ *   .pass-* = PROFILE (what people see when they tap a set-up card): an
+ *             ALL ACCESS backstage pass hanging off a lanyard.
+ * Your colours and fonts come from cards.config.json (js/look.js sets the
+ * --hot, --soft… variables below). Every shade of the messenger window is
+ * mixed from --hot, so changing that one colour re-tints the whole thing.
+ * Every animation sits inside prefers-reduced-motion: no-preference. */
+
+:root {
+  --hot: #ff1493;
+  --soft: #ff69b4;
+  --lilac: #b19cd9;
+  --mint: #97d3b4;
+  --ink: #1a0a14;
+  --night: #0b0208;
+  --silver: #c0c0c0;
+
+  /* Shades mixed from your colours */
+  --hot-light: color-mix(in srgb, var(--hot) 50%, white);
+  --hot-bright: color-mix(in srgb, var(--hot) 82%, white);
+  --hot-deep: color-mix(in srgb, var(--hot) 84%, black);
+  --hot-darker: color-mix(in srgb, var(--hot) 60%, black);
+  --hot-dark: color-mix(in srgb, var(--hot) 42%, black);
+  --hot-wash: color-mix(in srgb, var(--hot) 9%, white);
+  --hot-faint: color-mix(in srgb, var(--hot) 4%, white);
+  --hot-line: color-mix(in srgb, var(--hot) 17%, white);
+  --hot-glow: color-mix(in srgb, var(--hot) 38%, transparent);
+  --soft-line: color-mix(in srgb, var(--soft) 60%, transparent);
+  --lilac-line: color-mix(in srgb, var(--lilac) 45%, transparent);
+  --plum: color-mix(in srgb, color-mix(in srgb, var(--ink) 70%, var(--hot)) 85%, white);
+  --night-top: color-mix(in srgb, var(--hot) 22%, var(--night));
+
+  --font-display: "Bagel Fat One", "Cooper Black", cursive;
+  --font-pixel: "Pixelify Sans", monospace;
+  --font-numbers: "VT323", monospace;
+  --font-body: "Space Grotesk", system-ui, sans-serif;
+  --font-xp: Tahoma, Verdana, "Segoe UI", system-ui, sans-serif;
+}
+
+/* Older phones without colour mixing: the original pink shades. */
+@supports not (color: color-mix(in srgb, red 50%, blue)) {
+  :root {
+    --hot-light: #ff8cc6; --hot-bright: #ff3d9a; --hot-deep: #d6007a; --hot-darker: #8f0052;
+    --hot-dark: #6e0a45; --hot-wash: #fde7f2; --hot-faint: #fdf3f8; --hot-line: #f0d3e3;
+    --hot-glow: rgba(255, 20, 147, 0.38); --soft-line: rgba(255, 105, 180, 0.6);
+    --lilac-line: rgba(177, 156, 217, 0.45); --plum: #6b3a5a; --night-top: #3a0b2a;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { background: var(--night); -webkit-text-size-adjust: 100%; }
+h1, h2, p, ol, li { margin: 0; padding: 0; }
+button, input { font: inherit; }
+
+.display { font-family: var(--font-display); font-weight: 400; }
+.pixel { font-family: var(--font-pixel); }
+.numbers { font-family: var(--font-numbers); }
+.body { font-family: var(--font-body); }
+.xp { font-family: var(--font-xp); }
+
+.spark {
+  position: absolute;
+  color: #fff;
+  text-shadow: 0 0 8px var(--soft);
+  pointer-events: none;
+  user-select: none;
+}
+
+.loading {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(90% 60% at 50% 0%, var(--night-top) 0%, var(--night) 70%);
+  color: var(--soft);
+  font-family: var(--font-pixel);
+  font-size: 16px;
+}
+
+/* ---------- messenger window (setup) ----------
+ * Glossy XP-style title bar with window buttons, menu bar, display-picture
+ * frame, "(Online)" status, italic personal message, group header, banner
+ * strip, "has just signed in" toast. Body text is near-black on white so it
+ * reads easily in a dim room. */
+.msn-page {
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  padding: 28px 14px 48px;
+  color: #1f1f1f;
+  background-color: var(--hot-deep);
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.16) 1.5px, transparent 1.6px),
+    linear-gradient(180deg, var(--hot-bright) 0%, var(--hot-deep) 45%, var(--hot-darker) 100%);
+  background-size: 16px 16px, 100% 100%;
+}
+.msn-inner { position: relative; max-width: 420px; margin: 0 auto; }
+.msn-window {
+  border-radius: 10px 10px 6px 6px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--hot-dark);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.55), 0 22px 50px rgba(40, 0, 25, 0.55);
+}
+.msn-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 6px 8px;
+  background: linear-gradient(180deg, var(--hot-light) 0%, var(--hot-bright) 18%, var(--hot-deep) 55%, var(--hot-darker) 100%);
+  border-bottom: 1px solid var(--hot-dark);
+}
+.msn-bar-title {
+  flex: 1;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  text-shadow: 1px 1px 1px var(--hot-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.msn-btns { display: flex; gap: 3px; flex: none; }
+.msn-btns span {
+  width: 24px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--hot-light) 0%, var(--hot-bright) 50%, var(--hot-deep) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.msn-btns span:last-child { background: linear-gradient(180deg, #ff8f8f 0%, #f0433f 50%, #c41e1e 100%); }
+.msn-menu {
+  display: flex;
+  gap: 14px;
+  padding: 4px 10px;
+  background: var(--hot-faint);
+  border-bottom: 1px solid var(--hot-line);
+  font-size: 13px;
+  color: #2b2b2b;
+}
+.msn-who {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 12px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--hot-wash) 100%);
+  border-bottom: 1px solid var(--hot-line);
+}
+.msn-avatar {
+  width: 76px;
+  height: 76px;
+  flex: none;
+  border-radius: 9px;
+  padding: 3px;
+  background: #fff;
+  border: 1px solid #b9a3b1;
+  box-shadow: 0 2px 5px rgba(40, 0, 25, 0.25);
+}
+.msn-avatar span {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--hot) 0%, var(--lilac) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(60, 0, 35, 0.35);
+}
+.msn-who-text { min-width: 0; }
+.msn-name { font-size: 20px; font-weight: 700; line-height: 1.15; color: #1f1f1f; overflow-wrap: anywhere; }
+.msn-status { margin-top: 3px; font-size: 13px; color: #1d6b2a; display: flex; align-items: center; gap: 5px; }
+.msn-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9dff8a 0%, #2fb24a 60%, #1d7a30 100%);
+  border: 1px solid #1d6b2a;
+}
+.msn-psm { margin-top: 4px; font-size: 13px; font-style: italic; line-height: 1.35; color: #555; }
+.msn-content { padding: 12px 14px 16px; }
+.msn-group {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--hot-dark);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--hot-line);
+}
+.msn-heading { font-size: 22px; font-weight: 700; color: #1f1f1f; line-height: 1.2; }
+.msn-text { margin-top: 8px; font-size: 15px; line-height: 1.45; color: #2b2b2b; }
+.msn-notice {
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #fff8d6;
+  border: 1px solid #e0c35a;
+  font-size: 13px;
+  color: #4a3b00;
+}
+.msn-form { display: grid; gap: 11px; }
+.msn-form label { display: block; }
+.msn-label { display: block; font-size: 13px; font-weight: 700; color: var(--hot-dark); margin-bottom: 3px; }
+.msn-input {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #b0738f;
+  background: #fff;
+  padding: 10px;
+  font-size: 16px; /* 16px stops iPhone zooming into the field */
+  color: #1f1f1f;
+  outline: none;
+}
+.msn-input::placeholder { color: #8c7383; }
+.msn-input:focus { border-color: var(--hot-deep); box-shadow: 0 0 0 2px var(--hot-glow); }
+.msn-small { font-size: 12px; line-height: 1.45; color: #555; }
+.msn-small.under { display: block; margin-top: 4px; }
+.msn-error { font-size: 13px; font-weight: 700; color: #b8002e; }
+.msn-button {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--hot-dark);
+  background: linear-gradient(180deg, var(--hot-light) 0%, var(--hot) 45%, var(--hot-deep) 100%);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px var(--hot-dark);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 2px 4px rgba(40, 0, 25, 0.3);
+  cursor: pointer;
+}
+.msn-button:active { transform: translateY(1px); }
+.msn-button:disabled { opacity: 0.6; }
+.msn-button.top { margin-top: 16px; }
+.msn-link {
+  display: block;
+  margin: 12px auto 0;
+  font-size: 14px;
+  color: #0b4fa8; /* classic hyperlink blue */
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.msn-link.cancel { margin-bottom: 4px; padding-bottom: 12px; }
+.msn-steps { margin-top: 10px; display: grid; gap: 8px; font-size: 15px; line-height: 1.45; color: #1f1f1f; }
+.msn-steps li { list-style: none; padding: 10px 12px; border-radius: 6px; background: var(--hot-faint); border: 1px solid var(--hot-line); }
+.msn-steps + .msn-small { margin-top: 14px; }
+.msn-banner {
+  margin: 0 10px 10px;
+  padding: 7px 10px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(90deg, var(--hot) 0%, var(--lilac) 55%, var(--soft) 100%);
+  text-shadow: 1px 1px 0 rgba(60, 0, 35, 0.45);
+}
+.msn-nudge { margin-top: 18px; text-align: center; font-size: 15px; color: #fff; text-shadow: 1px 1px 1px var(--hot-dark); }
+
+/* "<name> has just signed in." pop-up, bottom corner, above the "show my QR" pill */
+.toast {
+  position: fixed;
+  right: 12px;
+  bottom: calc(max(16px, env(safe-area-inset-bottom)) + 64px);
+  z-index: 50;
+  width: 250px;
+  border-radius: 8px 8px 4px 4px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--hot-dark);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+.toast-bar {
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, var(--hot-light) 0%, var(--hot-deep) 60%, var(--hot-darker) 100%);
+  text-shadow: 1px 1px 1px var(--hot-dark);
+}
+.toast-body { display: flex; gap: 10px; align-items: center; padding: 12px 10px; font-size: 14px; color: #1f1f1f; line-height: 1.35; }
+
+/* ---------- backstage pass (profile) ---------- */
+.pass-page {
+  min-height: 100dvh;
+  position: relative;
+  overflow: hidden;
+  padding: 0 20px 48px;
+  color: #fff;
+  background: radial-gradient(90% 60% at 50% 0%, var(--night-top) 0%, var(--night) 70%);
+}
+.pass-inner { position: relative; max-width: 420px; margin: 0 auto; }
+/* The strap grows longer for a long event name, so the words are never cut off. */
+.strap {
+  margin: 0 auto;
+  width: 54px;
+  min-height: 104px;
+  padding: 10px 0;
+  background: repeating-linear-gradient(180deg, var(--hot) 0 34px, var(--soft) 34px 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.strap span { writing-mode: vertical-rl; font-size: 12px; letter-spacing: 0.2em; color: #fff; white-space: nowrap; text-transform: uppercase; }
+.clip {
+  margin: -4px auto 0;
+  width: 44px;
+  height: 24px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #f4f4f4 0%, #c0c0c0 35%, #fff 55%, #a9a9b3 80%, #e9e9ee 100%);
+}
+/* The pass hangs off the clip, so it swings from its top edge. */
+.pass-swing { transform-origin: 50% -20px; transform: rotate(2deg); margin-top: -6px; }
+.pass {
+  border-radius: 24px;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--hot) 0%, var(--lilac) 33%, var(--mint) 66%, var(--silver) 100%);
+  background-size: 200% 100%;
+  box-shadow: 0 25px 60px var(--hot-glow);
+}
+.pass-in { border-radius: 21px; overflow: hidden; background: #fff; color: var(--ink); }
+.pass-head {
+  padding: 14px 18px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--hot) 0%, var(--lilac) 33%, var(--mint) 66%, var(--silver) 100%);
+  background-size: 200% 100%;
+}
+.pass-hole { width: 70px; height: 12px; border-radius: 999px; background: var(--night); margin: 0 auto 12px; }
+.pass-access { font-size: 36px; line-height: 0.9; color: #fff; text-shadow: 0 3px 0 var(--hot-deep); text-transform: uppercase; }
+.pass-sub { font-size: 12px; letter-spacing: 0.32em; color: #fff; margin-top: 6px; text-transform: uppercase; }
+.pass-main { padding: 18px 18px 16px; position: relative; }
+.pass-seal {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--ink);
+  border: 3px solid #fff;
+  transform: rotate(12deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(160deg, #f4f4f4 0%, #c0c0c0 35%, #fff 55%, #a9a9b3 80%, #e9e9ee 100%);
+}
+.pass-label { font-size: 11px; letter-spacing: 0.3em; color: var(--hot-deep); }
+.pass-name { color: var(--hot); line-height: 0.95; margin-top: 4px; padding-right: 76px; overflow-wrap: anywhere; }
+.pass-role {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--soft);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.pass-links { margin-top: 16px; display: grid; gap: 9px; }
+.pass-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  font-family: var(--font-body);
+  transition: transform 0.12s ease;
+}
+.pass-pill:active { transform: scale(0.97); }
+.pass-pill b { font-weight: 700; overflow-wrap: anywhere; text-align: left; }
+.pass-pill i { font-style: normal; font-size: 11px; color: var(--soft); letter-spacing: 0.15em; flex: none; }
+.pass-empty { margin-top: 16px; font-size: 14px; color: var(--plum); }
+.pass-barcode {
+  margin-top: 16px;
+  height: 32px;
+  background: repeating-linear-gradient(90deg,
+    var(--ink) 0 3px, transparent 3px 5px, var(--ink) 5px 6px, transparent 6px 9px,
+    var(--ink) 9px 13px, transparent 13px 15px);
+}
+.pass-num { display: flex; justify-content: space-between; font-size: 15px; margin-top: 4px; color: var(--plum); }
+.pass-under { text-align: center; margin-top: 26px; color: rgba(255, 255, 255, 0.6); font-size: 13px; }
+
+/* ---------- the owner's pass flips over to a QR ----------
+ * Both sides sit in the same grid cell, so the pass is as tall as whichever
+ * side needs more room. The hidden side is turned away AND visibility:hidden
+ * from the halfway point, so it never shows through (older iPhone Safari)
+ * and screen readers only read the side facing you. */
+.flip { perspective: 1600px; }
+.flip-card { display: grid; transform-style: preserve-3d; }
+.face {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.face > .pass-in { flex: 1; display: flex; flex-direction: column; }
+.face .pass-main { flex: 1; display: flex; flex-direction: column; }
+.face .pass-role { align-self: flex-start; }
+.face .pass-links, .face .pass-empty { margin-bottom: 16px; }
+.face .pass-barcode { margin-top: auto; }
+.face-back { transform: rotateY(180deg); visibility: hidden; }
+.flipped { transform: rotateY(180deg); }
+.flipped > .face { visibility: hidden; }
+.flipped > .face-back { visibility: visible; }
+.back-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 18px 16px;
+  text-align: center;
+}
+/* Plain black-on-white with a wide white margin: what phone cameras read
+ * fastest in a dim room. */
+.back-qr {
+  width: min(250px, 78%);
+  aspect-ratio: 1;
+  padding: 16px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 0 0 3px var(--hot-line);
+}
+.back-qr svg { display: block; width: 100%; height: 100%; }
+.back-name { margin-top: 14px; font-size: 30px; line-height: 1; color: var(--hot); overflow-wrap: anywhere; }
+.back-hint { margin-top: 8px; font-size: 14px; line-height: 1.4; color: var(--plum); font-family: var(--font-body); }
+.back-num { width: 100%; margin-top: auto; padding-top: 16px; }
+
+/* Floating "show my QR" pill, under your thumb at the bottom of the screen */
+.flip-btn {
+  position: fixed;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  background: var(--hot);
+  color: #fff;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 10px 28px var(--hot-glow), 0 2px 0 rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+.flip-btn:active { transform: scale(0.96); }
+.flip-btn[aria-pressed="true"] { background: var(--ink); color: var(--soft); border-color: var(--soft); }
+
+/* Owner tools under the pass */
+.owner {
+  margin-bottom: 64px; /* room to scroll clear of the floating pill */
+  margin-top: 30px;
+  border-radius: 18px;
+  border: 2px solid var(--lilac-line);
+  background: color-mix(in srgb, var(--ink) 85%, transparent);
+  padding: 16px;
+  font-family: var(--font-body);
+}
+.owner-title { font-size: 12px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--lilac); }
+.owner-note { margin-top: 8px; font-size: 12px; color: var(--soft); }
+.owner-buttons { margin-top: 12px; display: grid; gap: 8px; }
+.owner-email { margin-top: 10px; font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.8); }
+.confirm { margin-top: 4px; text-align: center; }
+.confirm p { font-size: 12px; color: rgba(255, 255, 255, 0.7); }
+.confirm div { margin-top: 8px; display: flex; justify-content: center; gap: 16px; }
+.btn-hot, .btn-outline {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 17px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #fff;
+  cursor: pointer;
+}
+.btn-hot { background: var(--hot); border: 2px solid var(--hot); }
+.btn-outline { background: transparent; border: 2px solid var(--soft-line); }
+.text-link {
+  display: block;
+  margin: 6px auto 0;
+  background: none;
+  border: 0;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.text-link.hot { color: var(--soft); }
+.text-link.gap { margin-top: 24px; }
+.inline-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* "is this your card? get an edit link" */
+.recover {
+  margin-top: 22px;
+  border-radius: 18px;
+  border: 2px solid var(--lilac-line);
+  background: color-mix(in srgb, var(--ink) 85%, transparent);
+  padding: 16px;
+  font-family: var(--font-body);
+}
+.recover-form { display: grid; gap: 10px; }
+.recover-msg { font-size: 13px; line-height: 1.5; color: rgba(255, 255, 255, 0.85); }
+.recover-input {
+  width: 100%;
+  border-radius: 10px;
+  border: 2px solid var(--lilac-line);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 11px 12px;
+  font-size: 16px;
+  color: #fff;
+  outline: none;
+}
+.recover-input::placeholder { color: rgba(255, 255, 255, 0.45); }
+.recover-input:focus { border-color: var(--soft); }
+
+/* ---------- movement (only if the phone allows it) ---------- */
+@keyframes swing {
+  0%, 100% { transform: rotate(2.5deg); }
+  50% { transform: rotate(-1.5deg); }
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.6) rotate(0deg); }
+  45%, 55% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+}
+@keyframes toastUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: translateY(14px) scale(0.94); }
+  70% { opacity: 1; transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pulse {
+  50% { opacity: 0.4; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pass-swing { animation: swing 6s ease-in-out infinite; }
+  .pass-swing.steady { animation-play-state: paused; }
+  /* Same timing both ways, so the sides swap exactly edge-on (0.3s) */
+  .flip-card { transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1); }
+  .face { transition: visibility 0s linear 0.3s; }
+  .flip-btn { animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s backwards; }
+  .pass, .pass-head { animation: shimmer 6s ease-in-out infinite alternate; }
+  .spark { animation: twinkle 2.8s ease-in-out infinite; }
+  .msn-window, .pass-inner { animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .toast { animation: toastUp 0.45s ease-out both; }
+  .loading p { animation: pulse 1.4s ease-in-out infinite; }
+}
