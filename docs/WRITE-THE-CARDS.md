@@ -18,7 +18,7 @@ Each card holds one web address. You write a whole batch from a list on your iPh
 ## 2. Get the app
 
 1. On your iPhone (iPhone 7 or newer), install **NFC Tools** by wakdev from the App Store. It's free.
-2. In the app, buy the **Pro** upgrade (A$5.99 one-off in Australia). You need it for **CSV import**, the feature that writes a list of addresses one card at a time.
+2. In the app, buy the **Pro** upgrade (A$5.99 one-off in Australia). You need it for **Import from CSV**, the feature that writes a list of addresses one card at a time.
 
 NFC Tools is on Android too. These steps describe the iPhone.
 
@@ -36,7 +36,10 @@ The lists come in:
 
 ## 4. Write the test cards first
 
-1. In NFC Tools, open **CSV import** and pick the **test 1–3** list.
+1. In NFC Tools, tap **Write**, then **More options**, then **Import from CSV**, and pick the **test 1–3** list.
+   - ⚠ Switch **off** "First row is a header". It starts switched on, and the lists have no header row, so with it on your first card gets skipped. You'll see the count go up by one (46 rows becomes 47 on a 4–50 list).
+   - Tick, and the Write screen shows row 1 ("1 / 3" on the test list).
+   - Tap **Write** to start each card.
 2. Hold a blank card flat against the **top of the back** of the iPhone, near the camera. Hold still for a second or two until it says it's written. The app moves on to the next row.
 3. Write all 3.
 4. Close NFC Tools, then tap card 1 on your phone again. You should see the pink "New bestie added!" window. That means it worked.

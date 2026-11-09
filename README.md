@@ -28,7 +28,7 @@ The number in the address tells you where you're up to when you write the cards.
 - A computer with **Claude Code** (or Codex)
 - A free **Netlify** account, to put it online. The free plan allows business use
 - **Blank NFC cards** (NTAG215 is a good pick: rewritable, plenty of room). One per guest, plus spares
-- An **iPhone** with the **NFC Tools** app (by wakdev) and its **Pro** upgrade, to write the cards. The CSV import that writes a whole batch needs Pro (A$5.99 one-off in Australia)
+- An **iPhone** with the **NFC Tools** app (by wakdev) and its **Pro** upgrade, to write the cards. Its Import from CSV, which writes a whole batch, needs Pro (A$5.99 one-off in Australia)
 - Optional: a free **Resend** account and your own domain, for the email edit links
 
 ## Set it up (the easy way)

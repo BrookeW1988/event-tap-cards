@@ -55,7 +55,7 @@ Follow `docs/GO-LIVE.md`:
 Only once the site is live at its final address (SITE_URL in `.env`). Ask how many cards they have.
 - `npm run cards -- 1 3` (always first: the test list), then `npm run cards -- 4 50`, `npm run cards -- 51 100` and so on in 50s. Files land in `card-lists/`.
 - Or tell them to open their LIVE admin page on their iPhone, where **Write your cards** downloads the same lists straight into Files.
-- Then walk them through `docs/WRITE-THE-CARDS.md`: NFC Tools by wakdev + its Pro upgrade (CSV import needs Pro), CSV import, card flat to the top of the back of the iPhone, test 3 first and tap them (NFC Tools closed), never lock the cards.
+- Then walk them through `docs/WRITE-THE-CARDS.md`: NFC Tools by wakdev + its Pro upgrade (Import from CSV needs Pro), then Write → More options → Import from CSV, pick the list, **switch OFF "First row is a header"** (it starts on, the lists have no header, so with it on the first card is skipped: the row count shows one short), tick, tap Write, card flat to the top of the back of the iPhone, test 3 first and tap them (NFC Tools closed), never lock the cards.
 - **Lost their place:** have them tap the last card they wrote; the number is in the address (`/c/43-…`). Make a list from the NEXT number: `npm run cards -- 44 100`. Skipping numbers is harmless; writing the same number twice means two people share one card, so when unsure, start a few past it.
 - `npm run cards -- --show 27` prints one card's address (handy for checking a card).
 
